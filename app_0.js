@@ -30,13 +30,9 @@ app.use(
 	// localhost is all previous to slash '/'
 	// api prefix
 	'/api',
-	// require what you have in i.e './routes/tracks'
-	// require what you have in './routes/?'
+	// require what you have in './routes/tracks'
 	// Concatenate api to what is here
-	// once '/tracks' erased from '.routes/tracks'
-	// it refers directly to index.js
-	// app.use('/api', require('./routes)) invoke index.js
-	require('./routes')
+	require('./routes/tracks_0')
 	// returns
 	/* {
 
