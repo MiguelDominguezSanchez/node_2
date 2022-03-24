@@ -7,6 +7,8 @@ const express = require('express')
 // Incorporate Cors library
 // Cors, prevents from CORS error, Browser Cross Origin Error
 const cors = require('cors')
+// imported dbConnect Mongo Connection
+const dbConnect = require('./config/mongo')
 // Declare app = express
 const app = express()
 // App use of Cors
@@ -23,3 +25,6 @@ const port = process.env.PORT || 3000
 app.listen(port, () => {
 	console.log(`http://localhost:${port}`)
 })
+
+// Invoke imported Mongo connection function
+dbConnect()
