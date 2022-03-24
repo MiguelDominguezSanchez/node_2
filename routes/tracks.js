@@ -8,7 +8,7 @@ const router = express.Router()
 // http://localhhost/tracks GET, POST, DELETE, PUT
 
 // ***************************************
-// ***************************************
+// ******* Dynamic Approach ***************
 // ***************************************
 // Little Route GET Method Usage
 // Obtain a list of things
@@ -23,6 +23,22 @@ router.get(
 	// two args, express offered methods
 	// req, res
 	// what is the request || response request
+	//
+	//
+	//
+	// to culminate in index.js
+	// we say:
+	// we have here below this controller (req, res)
+	//
+	// we want this to response when
+	// the route
+	// http://localhhost/tracks
+	// is placed
+	//
+	// we already have the name of the route family
+	//
+	// we want these segmented controllers be called in index.js
+	//
 	(req, res) => {
 		// constant array called data
 		const data = ['hola', 'mundo']
