@@ -13,7 +13,27 @@ const dbConnect = require('./config/mongo')
 const app = express()
 // App use of Cors
 app.use(cors())
-
+// because we must say to our app.js
+// hey: I want you to be ready to receive info thru a post
+app.use(express.json())
+// we capture the object in our controller
+// returns
+//
+// {
+//   name: 'Leifer',
+//   album: 'Album',
+//   cover: 'http://tttt.com',
+//   artist: { name: 'Leifer', nickname: 'leifermendez', nationality: 'VE' },
+//   duration: { start: 1, end: 0 },
+//   mediaId: '623af35c023ceb845d00b918'
+// }
+//
+//
+//
+//
+//
+//
+//
 //  Define a constant port,
 // Wrapped with ENV Environment variable
 // process.env.PORT

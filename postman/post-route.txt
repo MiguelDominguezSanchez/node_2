@@ -1,0 +1,18 @@
+// Object must fulfill the Model Conditions
+// Homogenization according to what we want to do
+// Postman json
+{
+  "name": "Leifer",
+  "album": "Album",
+  "cover": "http://tttt.com",
+  "artist": {
+      "name": "Leifer",
+      "nickname": "leifermendez",
+      "nationality": "VE"
+  },
+  "duration": {
+      "start": 1,
+      "end": 0
+  },
+  "mediaId": "623af35c023ceb845d00b918"
+}

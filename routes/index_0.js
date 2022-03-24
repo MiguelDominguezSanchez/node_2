@@ -23,7 +23,7 @@ const PATH_ROUTES = __dirname
 const a = fs.readdirSync(PATH_ROUTES)
 // the array PATH_ROUTES
 // log array
-console.log({ a })
+// console.log({ a })
 // returns in console an array with files inside routes directory
 // { a: [ 'index.js', 'tracks.js', ] }
 
