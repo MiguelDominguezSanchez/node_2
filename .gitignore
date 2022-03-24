@@ -1,0 +1,7 @@
+# prevent files from being uploaded to github
+# 
+# Node Modules
+node_modules/
+# Environment Variables
+.env
+.env.example
