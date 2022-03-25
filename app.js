@@ -28,8 +28,8 @@ app.use(express.json())
 //   mediaId: '623af35c023ceb845d00b918'
 // }
 //
-//
-//
+// The idea is: Due to, this object fulfill all the conditions
+// send it automatically
 //
 //
 //
