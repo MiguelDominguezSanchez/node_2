@@ -1,4 +1,5 @@
 const { storageModel } = require('../models')
+const PUBLIC_URL = process.env.PUBLIC_URL
 /**
  * Obtener lista de la base de datos
  * @param {*} req
@@ -27,6 +28,10 @@ const createItem = async (req, res) => {
 	// file prop can be taken from req
 	const { body, file } = req
 	console.log(file)
+	const fileData = {
+		filename: file.filename,
+		url: `${PUBLIC_URL}/${file.filename}`,
+	}
 	//
 	/*
 	{
@@ -48,8 +53,8 @@ const createItem = async (req, res) => {
 	//
 	//
 	//
-	const data = await storageModel.create(body)
-	res.send({ file })
+	const data = await storageModel.create(fileData)
+	res.send({ data })
 }
 
 /**
