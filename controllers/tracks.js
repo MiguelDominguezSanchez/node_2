@@ -8,11 +8,9 @@ const { handleHttpError } = require('../utils/handleError')
  */
 const getItems = async (req, res) => {
 	try {
-		// inside here success
 		const data = await tracksModel.find({})
 		res.send({ data })
 	} catch (e) {
-		// but st bad happens return catch
 		handleHttpError(res, 'ERROR_GET_ITEMS')
 	}
 }
@@ -21,51 +19,28 @@ const getItems = async (req, res) => {
  * @param {*} req
  * @param {*} res
  */
-const getItem = async (req, res) => {}
-//
-//
-//
+const getItem = async (req, res) => {
+	try {
+		req = matchedData(req)
+		const { id } = req
+		const data = await tracksModel.findById(id)
+		res.send({ data })
+	} catch (e) {
+		handleHttpError(res, 'ERROR_GET_ITEM')
+	}
+}
 /**
  * Obtener un registro
  * @param {*} req
  * @param {*} res
  */
-const createItem = async (
-	// in all the controllers we have two arguments
-	// req, res
-	// but if we want to we could receive a third one called 'next'
-	// it is not as used as much, because it is taken for granted
-	req,
-	res
-) => {
+const createItem = async (req, res) => {
 	try {
-		// inside here success
-		// I am gonna place here a temporal body,
-		// I am gonna say: req.body
-		// const body = req.body
-		// and on the other hand I am gonna say clean body
-		// and that bodyClean is gonna be equal to matchedData(req)
-		// const bodyClean = matchedData(req)
-		// Express-validator offers us a very beautiful function that is the following
-		//
-		// we change the above format to:
 		const body = matchedData(req)
 
-		/*
-		// process of recuperating information 
-		const { body } = req 
-		// console.log(body)
-		*/
 		const data = await tracksModel.create(body)
-		// res.send({ data })
-		// once matchedData, bodyClean above done
-		//  I return logged body, and bodyClean
-		// res.send({ body, bodyClean })
 		res.send({ data })
-		// in that way we make sure that validator fulfills its function of validator
-		// and it returns the data totally clean
 	} catch (e) {
-		// but st bad happens return catch
 		handleHttpError(res, 'ERROR_CREATE_ITEMS')
 	}
 }
@@ -76,7 +51,43 @@ const createItem = async (
  * @param {*} res
  */
 
-const updateItem = async (req, res) => {}
+const updateItem = async (req, res) => {
+	try {
+		// 'id' comes from 'body'
+		// to extract id from body object
+		// and thee rest it will be placed in a constant called body
+		// from one object matchedData(req),
+		// we are generating two objects
+		// one object that its only going to contain 'id'
+		// and a remaining with the other things
+		// '...body'
+		const { id, ...body } = matchedData(req)
+
+		// we have two totally different arrays:
+		// one with id
+		// {
+		// 	id: 1
+		// }
+		// and the other with the rest of the things
+		// that would be, name, album, the details,...
+		// {
+		// 	name:
+		// }
+
+		// findOneAndUpdate
+		const data = await tracksModel.findOneAndUpdate(
+			// first arg query, search sentence, 'id'
+			// so, we have  the id to make the search
+			id,
+			// second arg 'body'
+			// and we have the body that is the information that we are gonna insert when updating
+			body
+		)
+		res.send({ data })
+	} catch (e) {
+		handleHttpError(res, 'ERROR_UPDATE_ITEMS')
+	}
+}
 
 /**
  * Eliminar un registro
@@ -84,6 +95,18 @@ const updateItem = async (req, res) => {}
  * @param {*} res
  */
 
-const deleteItem = async (req, res) => {}
+const deleteItem = async (req, res) => {
+	try {
+		req = matchedData(req)
+		const { id } = req
+		// deleteOne method
+		// Mongo creates a _id automatically in the Data Base
+		const data = await tracksModel.deleteOne({ _id: id })
+		res.send({ data })
+	} catch (e) {
+		console.log(e)
+		handleHttpError(res, 'ERROR_DELETE_ITEM')
+	}
+}
 
-module.exports = { getItems, getItem, createItem, deleteItem }
+module.exports = { getItems, getItem, createItem, updateItem, deleteItem }
