@@ -1,4 +1,6 @@
+const { matchedData } = require('express-validator')
 const { tracksModel } = require('../models')
+const { handleHttpError } = require('../utils/handleError')
 /**
  * Obtener lista de la base de datos
  * @param {*} req
@@ -19,7 +21,7 @@ const getItems = async (req, res) => {
  * @param {*} req
  * @param {*} res
  */
-const getItem = (req, res) => {}
+const getItem = async (req, res) => {}
 //
 //
 //
@@ -38,10 +40,30 @@ const createItem = async (
 ) => {
 	try {
 		// inside here success
-		const { body } = req
+		// I am gonna place here a temporal body,
+		// I am gonna say: req.body
+		// const body = req.body
+		// and on the other hand I am gonna say clean body
+		// and that bodyClean is gonna be equal to matchedData(req)
+		// const bodyClean = matchedData(req)
+		// Express-validator offers us a very beautiful function that is the following
+		//
+		// we change the above format to:
+		const body = matchedData(req)
+
+		/*
+		// process of recuperating information 
+		const { body } = req 
 		// console.log(body)
+		*/
 		const data = await tracksModel.create(body)
+		// res.send({ data })
+		// once matchedData, bodyClean above done
+		//  I return logged body, and bodyClean
+		// res.send({ body, bodyClean })
 		res.send({ data })
+		// in that way we make sure that validator fulfills its function of validator
+		// and it returns the data totally clean
 	} catch (e) {
 		// but st bad happens return catch
 		handleHttpError(res, 'ERROR_CREATE_ITEMS')
@@ -54,7 +76,7 @@ const createItem = async (
  * @param {*} res
  */
 
-const updateItem = (req, res) => {}
+const updateItem = async (req, res) => {}
 
 /**
  * Eliminar un registro
@@ -62,6 +84,6 @@ const updateItem = (req, res) => {}
  * @param {*} res
  */
 
-const deleteItem = (req, res) => {}
+const deleteItem = async (req, res) => {}
 
 module.exports = { getItems, getItem, createItem, deleteItem }
