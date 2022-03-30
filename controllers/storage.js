@@ -1,20 +1,40 @@
+const fs = require('fs')
+const { matchedData } = require('express-validator')
 const { storageModel } = require('../models')
+const { handleHttpError } = require('../utils/handleError')
+
 const PUBLIC_URL = process.env.PUBLIC_URL
+const MEDIA_PATH = `${__dirname}/../../storage`
+// const MEDIA_PATH = `${__dirname}/../storage`
+
 /**
  * Obtener lista de la base de datos
  * @param {*} req
  * @param {*} res
  */
 const getItems = async (req, res) => {
-	const data = await storageModel.find({})
-	res.send({ data })
+	try {
+		const data = await storageModel.find({})
+		res.send({ data })
+	} catch (e) {
+		handleHttpError(res, 'ERROR_LIST_ITEMS')
+	}
 }
 /**
  * Obtener un detalle
  * @param {*} req
  * @param {*} res
  */
-const getItem = (req, res) => {}
+const getItem = async (req, res) => {
+	try {
+		// id is equal to get in matchedData(req)
+		const { id } = matchedData(req)
+		const data = await storageModel.findById(id)
+		res.send({ data })
+	} catch (e) {
+		handleHttpError(res, 'ERROR_DETAIL_ITEMS')
+	}
+}
 //
 //
 //
@@ -24,16 +44,18 @@ const getItem = (req, res) => {}
  * @param {*} res
  */
 const createItem = async (req, res) => {
-	// From the route obtain the file name
-	// file prop can be taken from req
-	const { body, file } = req
-	console.log(file)
-	const fileData = {
-		filename: file.filename,
-		url: `${PUBLIC_URL}/${file.filename}`,
-	}
-	//
-	/*
+	// Error Controller
+	try {
+		// From the route obtain the file name
+		// file prop can be taken from req
+		const { file } = req
+		// console.log(file)
+		const fileData = {
+			filename: file.filename,
+			url: `${PUBLIC_URL}/${file.filename}`,
+		}
+		//
+		/*
 	{
     "file": {
         "fieldname": "myfile", // Field Name
@@ -47,23 +69,18 @@ const createItem = async (req, res) => {
     }
 }
 */
-	//
-	// we can apply filters in order fo you to filter a particular Data
-	// i.e. a PDF, MP3, ...
-	//
-	//
-	//
-	const data = await storageModel.create(fileData)
-	res.send({ data })
+		//
+		// we can apply filters in order fo you to filter a particular Data
+		// i.e. a PDF, MP3, ...
+		//
+		//
+		//
+		const data = await storageModel.create(fileData)
+		res.send({ data })
+	} catch (e) {
+		handleHttpError(res, 'ERROR_DETAIL_ITEMS')
+	}
 }
-
-/**
- * Actualizar un registro
- * @param {*} req
- * @param {*} res
- */
-
-const updateItem = (req, res) => {}
 
 /**
  * Eliminar un registro
@@ -71,6 +88,29 @@ const updateItem = (req, res) => {}
  * @param {*} res
  */
 
-const deleteItem = (req, res) => {}
+const deleteItem = async (req, res) => {
+	try {
+		// id is equal to get in matchedData(req)
+		const { id } = matchedData(req)
+		const dataFile = await storageModel.findById(id)
+		await storageModel.delete({ _id: id })
+		const { filename } = dataFile
+		const filePath = `${MEDIA_PATH}/${filename}`
+		// TODO c:/miproyecto/file-1232
+		// absolute route
+
+		// file system unlinkSync
+		// eliminate what is on that register
+		// fs.unlinkSync(filePath)
+		const data = {
+			filePath,
+			deleted: 1,
+		}
+
+		res.send({ data })
+	} catch (e) {
+		handleHttpError(res, 'ERROR_DETAIL_ITEMS')
+	}
+}
 
 module.exports = { getItems, getItem, createItem, deleteItem }

@@ -101,7 +101,7 @@ const deleteItem = async (req, res) => {
 		const { id } = req
 		// deleteOne method
 		// Mongo creates a _id automatically in the Data Base
-		const data = await tracksModel.deleteOne({ _id: id })
+		const data = await tracksModel.delete({ _id: id })
 		res.send({ data })
 	} catch (e) {
 		console.log(e)

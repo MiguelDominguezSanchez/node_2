@@ -1,0 +1,15 @@
+{
+  "name": "Leifer",
+  "album": "Album",
+  "cover": "http://tttt.com",
+  "artist": {
+    "name": "Leifer",
+    "nickname": "leifermendez",
+    "nationality": "VE"
+  },
+  "duration": {
+    "start": 1,
+    "end":0
+  },
+  "mediaId": "62443154f86118c94d1dfa98"
+}

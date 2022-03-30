@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
-
+// import package mongoose-delete in the model
+const mongooseDelete = require('mongoose-delete')
 const UserScheme = new mongoose.Schema(
 	{
 		name: {
@@ -32,4 +33,10 @@ const UserScheme = new mongoose.Schema(
 	}
 )
 
+// Implementation of package mongoose delete in the model
+// Scheme name, plugin, mongooseDelete
+// I need overrideMethods 'All'
+// in order to override the native methods
+// of mongoose with soft delete option
+UserScheme.plugin(mongooseDelete, { overrideMethods: 'all' })
 module.exports = mongoose.model('users', UserScheme)
