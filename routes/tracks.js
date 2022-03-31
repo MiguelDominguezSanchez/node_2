@@ -1,5 +1,7 @@
 const express = require('express')
 const router = express.Router()
+// import middleware auth
+const authMiddleware = require('../middleware/session')
 const {
 	validatorCreateItem,
 	validatorGetItem,
@@ -16,7 +18,12 @@ const {
  * List Items
  * */
 
-router.get('/', getItems)
+router.get(
+	'/',
+	// place session auth middleware
+	authMiddleware,
+	getItems
+)
 
 /**
  * Get Item detail

@@ -8,8 +8,20 @@ const { handleHttpError } = require('../utils/handleError')
  */
 const getItems = async (req, res) => {
 	try {
+		// you can now know user equal to what's on user
+		// from the middleware session.js
+		// req.user = user
+		const user = req.user
+		// in that way you know exactly who is that person
 		const data = await tracksModel.find({})
-		res.send({ data })
+		// place user as response as well
+		res.send({ data, user })
+		// that is to get an historial or traceability
+		// of what is doing each user inside the app
+		// routes, controllers
+		// I have a traceability of that type of data
+		// I know who is logging in, where and how
+		// in my application
 	} catch (e) {
 		handleHttpError(res, 'ERROR_GET_ITEMS')
 	}
@@ -104,7 +116,7 @@ const deleteItem = async (req, res) => {
 		const data = await tracksModel.delete({ _id: id })
 		res.send({ data })
 	} catch (e) {
-		console.log(e)
+		// console.log(e)
 		handleHttpError(res, 'ERROR_DELETE_ITEM')
 	}
 }
