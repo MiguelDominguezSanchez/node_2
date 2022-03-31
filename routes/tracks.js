@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-// import middleware auth
 const authMiddleware = require('../middleware/session')
+const checkRole = require('../middleware/role')
 const {
 	validatorCreateItem,
 	validatorGetItem,
@@ -18,32 +18,38 @@ const {
  * List Items
  * */
 
-router.get(
-	'/',
-	// place session auth middleware
-	authMiddleware,
-	getItems
-)
+router.get('/', authMiddleware, getItems)
 
 /**
  * Get Item detail
  * */
 
-router.get('/:id', validatorGetItem, getItem)
+router.get('/:id', authMiddleware, validatorGetItem, getItem)
 /**
  * Cerate a register
  * */
-router.post('/', validatorCreateItem, createItem)
+router.post(
+	'/',
+	authMiddleware,
+	// in the separated part of tracks
+	// only the users with an administrator permission with can make post request
+	checkRole(['admin']),
+	validatorCreateItem,
+	createItem
+)
 /**
  * Update a register
  * */
-// 'id' usage
-// sent data needs to match requirements
-// it uses two middlewares
-router.put('/:id', validatorGetItem, validatorCreateItem, updateItem)
+router.put(
+	'/:id',
+	authMiddleware,
+	validatorGetItem,
+	validatorCreateItem,
+	updateItem
+)
 /**
  * Get Item detail
  * */
 
-router.delete('/:id', validatorGetItem, deleteItem)
+router.delete('/:id', authMiddleware, validatorGetItem, deleteItem)
 module.exports = router
